@@ -56,4 +56,29 @@ contract NotesContract {
         delete notes[_id];
         emit NoteDeleted(_id);
     }
+
+    // Get all notes created by msg.sender
+    function getMyNotes() public view returns (Note[] memory) {
+        uint count = 0;
+
+        // First, count how many notes belong to msg.sender
+        for (uint i = 1; i <= noteCount; i++) {
+            if (notes[i].author == msg.sender) {
+                count++;
+            }
+        }
+
+        // Allocate memory for the result array
+        Note[] memory result = new Note[](count);
+        uint index = 0;
+
+        for (uint i = 1; i <= noteCount; i++) {
+            if (notes[i].author == msg.sender) {
+                result[index] = notes[i];
+                index++;
+            }
+        }
+
+        return result;
+    }
 }
